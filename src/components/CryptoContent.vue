@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-     <template v-if="coinDetails">
+     <template v-if="coinDetails.length">
         <template v-for="(coin,index) in coinDetails" :key="index">
             <tr :class="(index % 2 == 0) ? 'table-light' :'table-light'">
               <td>
