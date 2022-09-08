@@ -1,13 +1,34 @@
 <template>
-<h1>Apne Crypto Liya kya?</h1>
+  <div class="col-md-12 row">
+    <div class="col-md-10">
+        <h1>Apne Crypto Liya kya?</h1>
+    </div>
+
+    <div class="col-md-2 row">
+      <div class="col-md-4">
+          <h6 class="mt-3 text-danger">Currency:</h6>
+      </div>
+      <div class="col-md-8">
+        <select class="form-select mt-2 col-md-8" @change="changeCurrency($event)" id="currencySelect">
+          <template v-if="currencyList.length">
+            <template v-for="(currency,index) in currencyList" :key="index">
+              <option :symbol="currency.sign" :value="currency.uuid" :selected="(currencyDetails.id == currency.uuid)? true: false">{{currency.name}}</option>
+            </template>
+          </template>
+        </select>
+      </div>
+    </div>
+  </div>
 
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col" width="20%">Coin</th>
+      <th scope="col" width="5%">Sr. No</th>
+      <th scope="col" width="10%">Symbol</th>
+      <th scope="col" width="10%">Coin</th>
       <th scope="col" width="30%">Price</th>
       <th scope="col" width="30%">Change ( 24 Hours )</th>
-      <th scope="col" width="20%">Action</th>
+      <th scope="col" width="15%">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -15,10 +36,16 @@
         <template v-for="(coin,index) in coinDetails" :key="index">
             <tr :class="(index % 2 == 0) ? 'table-light' :'table-light'">
               <td>
-                <img :src="coin.iconUrl" :alt="coin.name" style="width:50px;height:50px;"><span class="p-2">{{coin.symbol}}</span>
+                <span class="p-2">{{index+1}}</span>
               </td>
-              <td>{{formatPrice(coin.price)}}</td>
-              <td><span :class="coin.change > 0 ?'text-success': 'text-danger'">{{coin.change}}</span></td>
+              <td>
+                <img :src="coin.iconUrl" :alt="coin.name" style="width:50px;height:50px;">
+              </td>
+              <td>
+                <span class="p-2">{{coin.symbol}}</span>
+              </td>
+              <td>{{currencyDetails.symbol}} {{formatPrice(coin.price)}}</td>
+              <td><span :class="coin.change > 0 ?'text-success': 'text-danger'">{{coin.change}} %</span></td>
               <td>
                 <button @click="toggleSideBar(coin)" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
                   More Detail
@@ -28,7 +55,7 @@
         </template>
       </template>
       <template v-else>
-          <tr><td colspan="5">No Record Yet</td></tr>
+          <tr><td colspan="6">No Record Found</td></tr>
       </template>
   </tbody>
 </table>
@@ -47,7 +74,7 @@
     </li>
   </ul>
 </div>
-<SideBar v-show="showSideBar" :coin="sideBarData" />
+<SideBar v-show="showSideBar" :coin="sideBarData" :currencyDetails="currencyDetails"/>
 </template>
 
 <script>
@@ -59,10 +86,13 @@ export default {
     SideBar,
   },
   created(){
+    this.getCurrencies()
     this.getCoinUpdate()
   },
   data(){
     return{
+      apiKey:'7cf2e14394mshf50f6cdaf1bf272p128751jsncd8219200b82',
+      apiHost:'coinranking1.p.rapidapi.com',
       coinDetails: {},
       showSideBar: false,
       sideBarData: {},
@@ -72,6 +102,11 @@ export default {
         offset: 0,
       },
       currentPage: 1,
+      currencyDetails:{
+        id:'6mUvpzCc2lFo',
+        symbol: '₹'
+      },
+      currencyList: {},
     }
   },
   methods: {
@@ -80,7 +115,7 @@ export default {
           method: 'GET',
           url: 'https://coinranking1.p.rapidapi.com/coins',
           params: {
-            referenceCurrencyUuid: 'yhjMzLPhuIDl',
+            referenceCurrencyUuid: this.currencyDetails.id,
             timePeriod: '24h',
             'tiers[0]': '1',
             orderBy: 'price',
@@ -89,8 +124,8 @@ export default {
             offset: this.pagination.offset
           },
           headers: {
-            'X-RapidAPI-Key': '7cf2e14394mshf50f6cdaf1bf272p128751jsncd8219200b82',
-            'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+            'X-RapidAPI-Key': this.apiKey,
+            'X-RapidAPI-Host': this.apiHost
           }
       };
 
@@ -111,10 +146,10 @@ export default {
       const options = {
         method: 'GET',
         url: 'https://coinranking1.p.rapidapi.com/coin/'+uuid,
-        params: {referenceCurrencyUuid: 'yhjMzLPhuIDl', timePeriod: '24h'},
+        params: {referenceCurrencyUuid: this.currencyDetails.id, timePeriod: '24h'},
         headers: {
-          'X-RapidAPI-Key': '7cf2e14394mshf50f6cdaf1bf272p128751jsncd8219200b82',
-          'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+          'X-RapidAPI-Key': this.apiKey,
+          'X-RapidAPI-Host': this.apiHost
         }
       };
 
@@ -139,10 +174,10 @@ export default {
       const options = {
         method: 'GET',
         url: 'https://coinranking1.p.rapidapi.com/search-suggestions',
-        params: {referenceCurrencyUuid: 'yhjMzLPhuIDl', query: string},
+        params: {referenceCurrencyUuid: this.currencyDetails.id, query: string},
         headers: {
-          'X-RapidAPI-Key': '7cf2e14394mshf50f6cdaf1bf272p128751jsncd8219200b82',
-          'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+          'X-RapidAPI-Key': this.apiKey,
+          'X-RapidAPI-Host': this.apiHost
         }
       };
 
@@ -156,6 +191,30 @@ export default {
       }).catch(function (error) {
         console.error(error);
       });
+    },
+    getCurrencies(){
+      const options = {
+        method: 'GET',
+        url: 'https://coinranking1.p.rapidapi.com/reference-currencies',
+        params: {limit: '100', offset: '0'},
+        headers: {
+          'X-RapidAPI-Key': this.apiKey,
+          'X-RapidAPI-Host': this.apiHost
+        }
+      };
+      axios.request(options).then((response) => {
+        this.currencyList = response.data.data.currencies;
+      }).catch(function (error) {
+        console.error(error);
+      });
+    },
+    changeCurrency(event){
+      this.currencyDetails.id = event.target.value;
+      this.getCoinUpdate()
+      var options = event.target.options
+      if (options.selectedIndex > -1) {
+        this.currencyDetails.symbol = options[options.selectedIndex].getAttribute('symbol');
+      }
     }
   },
   watch:{

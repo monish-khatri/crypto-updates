@@ -15,9 +15,9 @@
             <img :src="coin.iconUrl" :alt="coin.name" style="width:100%;height:50px;">
             <hr>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Price : {{coin.price}}</li>
+                <li class="list-group-item">Price : {{currencyDetails.symbol}} {{coin.price}}</li>
                 <li class="list-group-item">Market Capital: {{coin.marketCap}}</li>
-                <li class="list-group-item">Change  ( 24 Hours ): <span v-if="coin.change > 0 " class='text-success'> +{{coin.change}}</span> <span v-else class='text-danger'> {{coin.change}}</span></li>
+                <li class="list-group-item">Change  ( 24 Hours ): <span v-if="coin.change > 0 " class='text-success'> +{{coin.change}} %</span> <span v-else class='text-danger'> {{coin.change}} %</span></li>
                 <li class="list-group-item">BTC Price : {{coin.btcPrice}}</li>
                 <li class="list-group-item">Volume  ( 24 Hours ): {{coin['24hVolume']}}</li>
             </ul>
@@ -43,6 +43,7 @@
         name: 'SideBar',
         props: {
             coin: Object,
+            currencyDetails: Object,
         }
     }
 </script>
