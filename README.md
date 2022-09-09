@@ -1,5 +1,11 @@
-# vue-crypto-update
+# Crypto Update With Vue 3
 
+# Descroption
+ - Helps Find out the crypto coins 
+ - Multi Currency Price Search 
+
+# Demo
+ [Project Demo](https://gleeful-gumption-07fa3c.netlify.app/)
 ## Project setup
 ```
 npm install
