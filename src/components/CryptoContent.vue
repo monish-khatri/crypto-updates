@@ -27,7 +27,6 @@
       <th scope="col" width="10%">Symbol</th>
       <th scope="col" width="10%">Coin</th>
       <th scope="col" width="30%">Price</th>
-      <th scope="col" width="30%">Change ( 24 Hours )</th>
       <th scope="col" width="15%">Action</th>
     </tr>
   </thead>
@@ -45,7 +44,6 @@
                 <span class="p-2">{{coin.symbol}}</span>
               </td>
               <td>{{currencyDetails.symbol}} {{formatPrice(coin.price)}}</td>
-              <td><span :class="coin.change > 0 ?'text-success': 'text-danger'">{{coin.change}} %</span></td>
               <td>
                 <button @click="toggleSideBar(coin)" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
                   More Detail
@@ -247,5 +245,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.offcanvas.offcanvas-end {
+  width:800px !important
 }
 </style>

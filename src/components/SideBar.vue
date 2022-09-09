@@ -12,9 +12,9 @@
                 <h6 class="card-subtitle text-muted"><a :href="coin.websiteUrl" target="_blank">{{coin.websiteUrl}}</a></h6>
             </div>
             <div class="card-body">
-            <img :src="coin.iconUrl" :alt="coin.name" style="width:100%;height:50px;">
+            <img :src="coin.iconUrl" :alt="coin.name" style="max-width: 50px;width:100%;height:50px;">
             <hr>
-            <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush ui-itmes">
                 <li class="list-group-item">Price : {{currencyDetails.symbol}} {{coin.price}}</li>
                 <li class="list-group-item">Market Capital: {{coin.marketCap}}</li>
                 <li class="list-group-item">Change  ( 24 Hours ): <span v-if="coin.change > 0 " class='text-success'> +{{coin.change}} %</span> <span v-else class='text-danger'> {{coin.change}} %</span></li>
@@ -23,12 +23,14 @@
             </ul>
             </div>
             <div class="card-body">
-                <iframe :src="coin.coinrankingUrl"></iframe>
-            </div>
-            <div class="card-body">
-                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Description</h5>
+                <h2 class="offcanvas-title" id="offcanvasExampleLabel">About <strong>{{coin.name}}</strong></h2>
 
                 <h6 v-html="coin.description" class="card-subtitle text-muted"></h6>
+            </div>
+            <div class="card-body">
+                <div>
+                    <iframe :src="coin.coinrankingUrl" class="ifameContent"></iframe>
+                </div>
             </div>
             <div class="card-footer text-muted">
                Developed by <h3>Monish Khatri</h3>
@@ -48,6 +50,16 @@
     }
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+.ui-itmes{
+    text-align: left;
+    width: 415px;
+    margin-left: 153px;
+}
+.ifameContent{
+    width: 700px;
+    max-width: 700px;
+    height: 500px;
+    max-height: 500px;
+}
 </style>
