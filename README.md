@@ -1,6 +1,6 @@
 # Crypto Update With Vue 3
 
-# Descroption
+# Description
  - Helps Find out the crypto coins 
  - Multi Currency Price Search 
 
